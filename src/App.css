@@ -1,0 +1,8 @@
+/* App.css — intentionally minimal.
+   Tailwind utility classes in App.tsx handle all layout.
+   #root must NOT set text-align or extra padding
+   so the flex centering in App.tsx works correctly. */
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
