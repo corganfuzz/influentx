@@ -27,3 +27,27 @@ body,
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
+
+/* =====================================================================
+   SHAREPOINT CLASSIC (seattle.master) LAYOUT OVERRIDES 
+   ===================================================================== */
+
+/* 1. Hide the Title Row (Site Logo, "index" text, and EDIT LINKS) */
+#s4-titlerow { 
+  display: none !important; 
+}
+
+/* 2. Hide the Left Nav container completely */
+#sideNavBox {
+  display: none !important;
+}
+
+/* 3. Reset the main content container */
+#contentRow { 
+  padding-top: 0 !important; 
+}
+#contentBox { 
+  /* SharePoint adds margin-left: 220px to make room for the left nav. Reset it. */
+  margin-left: 0 !important; 
+  min-width: 100% !important;
+}

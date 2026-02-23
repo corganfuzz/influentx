@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+.env
+PnP PowerShell.cer
+PnP PowerShell.pfx
+SharePoint_React_No_SPFx_Enterprise_2026_Guide.md
