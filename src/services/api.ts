@@ -2,7 +2,6 @@ import type { TemplatePayload, LambdaResponse } from "../types";
 
 const LAMBDA_URL = import.meta.env.VITE_LAMBDA_URL as string | undefined;
 
-/** Generates a simple v4-like UUID without an external library. */
 function generateRequestId(): string {
     return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
         const r = (Math.random() * 16) | 0;
@@ -19,9 +18,7 @@ export async function submitTemplate(params: {
     reportingDate: string;
 }): Promise<LambdaResponse> {
     if (!LAMBDA_URL) {
-        throw new Error(
-            "Lambda URL is not configured. Add VITE_LAMBDA_URL to your .env file."
-        );
+        throw new Error("Lambda URL is not configured. Add VITE_LAMBDA_URL to your .env file.");
     }
 
     const payload: TemplatePayload = {
@@ -37,8 +34,6 @@ export async function submitTemplate(params: {
         },
     };
 
-    console.info("[influentx] Submitting payload to Lambda →", payload);
-
     const response = await fetch(LAMBDA_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -50,6 +45,5 @@ export async function submitTemplate(params: {
         throw new Error(`Lambda returned ${response.status}: ${errorText}`);
     }
 
-    const data = (await response.json()) as LambdaResponse;
-    return data;
+    return (await response.json()) as LambdaResponse;
 }

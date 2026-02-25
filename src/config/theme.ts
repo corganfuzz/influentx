@@ -24,20 +24,20 @@ export const brandBlue = {
 export const appTheme: Theme = {
     ...createLightTheme(brandBlue),
 
-    // Page Background
-    colorNeutralBackground2: "#f3f4f6", // Very light off-white/gray for full page
+    // Page Background - Slightly off-white for contrast against pure white cards
+    colorNeutralBackground2: "#f9fafb",
 
     // Card/Form Surface
-    colorNeutralBackground1: "#ffffff", // Pure white for cards
+    colorNeutralBackground1: "#ffffff",
 
     // Borders
-    colorNeutralStroke1: "#E2E3E3",     // Gray4: Soft borders
-    colorNeutralStroke2: "#BDC0BF",     // Gray3: Hovered/stronger borders
+    colorNeutralStroke1: "#E2E3E3",     // Gray4
+    colorNeutralStroke2: "#BDC0BF",     // Gray3
 
     // Text hierarchy
-    colorNeutralForeground1: "#1C1F2A", // Gray1: Primary text — headings, labels
-    colorNeutralForeground2: "#808080", // Gray2: Secondary/helper text, subtitles
-    colorNeutralForeground3: "#BDC0BF", // Gray3: Metadata
+    colorNeutralForeground1: "#1C1F2A", // Gray1
+    colorNeutralForeground2: "#808080", // Gray2
+    colorNeutralForeground3: "#BDC0BF", // Gray3
 
     // Brand Overrides
     colorBrandBackground: "#6464e6",

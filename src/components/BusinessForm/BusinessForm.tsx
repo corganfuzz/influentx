@@ -41,7 +41,6 @@ export function BusinessForm({ isOpen, slide, onOpenChange, onSuccess }: Busines
                 technicians: parseInt(technicians, 10),
                 reportingDate: date,
             });
-            // Reset state for future
             setPainPoint("Financial");
             setRevenue("");
             setTechnicians("");
@@ -54,18 +53,13 @@ export function BusinessForm({ isOpen, slide, onOpenChange, onSuccess }: Busines
         }
     };
 
-    const handleOpenChange = (isOpen: boolean) => {
-        if (!isOpen) { // When closing, reset error
-            setSubmitError(null);
-        }
-        onOpenChange(isOpen);
+    const calculateCalculatedRevenue = () => {
+        const revNum = parseFloat(revenue);
+        return !isNaN(revNum) ? (revNum * 0.93).toFixed(2) : "";
     };
 
-    const revNum = parseFloat(revenue);
-    const calculatedRevenue = !isNaN(revNum) ? (revNum * 0.93).toFixed(2) : "";
-
     return (
-        <Dialog open={isOpen} onOpenChange={(_e, data) => handleOpenChange(data.open)}>
+        <Dialog open={isOpen} onOpenChange={(_e, data) => onOpenChange(data.open)}>
             <DialogSurface aria-describedby={undefined}>
                 <form onSubmit={handleSubmit}>
                     <DialogBody>
@@ -88,6 +82,7 @@ export function BusinessForm({ isOpen, slide, onOpenChange, onSuccess }: Busines
                             <Field label="Pain Points" required>
                                 <Dropdown
                                     placeholder="Select a pain point..."
+                                    selectedOptions={[painPoint]}
                                     value={painPoint}
                                     onOptionSelect={(_e, data) => setPainPoint(data.optionValue as string)}
                                 >
@@ -129,7 +124,7 @@ export function BusinessForm({ isOpen, slide, onOpenChange, onSuccess }: Busines
                                 validationMessage="This value is calculated automatically."
                             >
                                 <Input
-                                    value={calculatedRevenue}
+                                    value={calculateCalculatedRevenue()}
                                     readOnly
                                     appearance="filled-darker"
                                     placeholder="0.00"
