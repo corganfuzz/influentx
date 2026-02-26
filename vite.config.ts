@@ -32,4 +32,13 @@ export default defineConfig({
   // Always use relative paths. The create-aspx-loader.js script rewrites
   // them to absolute SharePoint paths when generating index.aspx.
   base: './',
+  server: {
+    proxy: {
+      '/api-templates': {
+        target: 'https://q2d5ribl0g.execute-api.us-east-1.amazonaws.com/dev/templates',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api-templates/, ''),
+      }
+    }
+  }
 })

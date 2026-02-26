@@ -3,6 +3,7 @@ export interface Slide {
   title: string;
   type: string;
   thumbnail: string;
+  fileName: string; // Path to the actual .pptx file
 }
 
 export interface TemplatePayload {
@@ -10,13 +11,11 @@ export interface TemplatePayload {
   submittedAt: string;
   template: {
     id: string;
-    title: string;
-    type: string;
+    fileName: string;
   };
   businessData: {
     painPoint: string;
     revenue: number;
-    adjustedTarget: number;
     technicians: number;
     reportingDate: string;
   };
@@ -26,4 +25,10 @@ export interface LambdaResponse {
   success: boolean;
   message?: string;
   downloadUrl?: string;
+}
+
+export interface ApiTemplateResponse {
+  fileName: string;
+  size: number;
+  lastModified: string;
 }

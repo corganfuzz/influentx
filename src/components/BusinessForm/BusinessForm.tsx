@@ -33,8 +33,7 @@ export function BusinessForm({ isOpen, slide, onOpenChange, onSuccess }: Busines
             const result = await submitTemplate({
                 template: {
                     id: slide.id,
-                    title: slide.title,
-                    type: slide.type,
+                    fileName: slide.fileName,
                 },
                 painPoint,
                 revenue: parseFloat(revenue),
