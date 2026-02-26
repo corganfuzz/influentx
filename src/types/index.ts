@@ -7,10 +7,7 @@ export interface Slide {
 }
 
 export interface TemplatePayload {
-  requestId: string;
-  submittedAt: string;
   template: {
-    id: string;
     fileName: string;
   };
   businessData: {
@@ -22,13 +19,18 @@ export interface TemplatePayload {
 }
 
 export interface LambdaResponse {
-  success: boolean;
+  success?: boolean;
   message?: string;
   downloadUrl?: string;
+  outputKey?: string;
 }
 
 export interface ApiTemplateResponse {
   fileName: string;
   size: number;
   lastModified: string;
+}
+
+export interface DownloadResponse {
+  downloadUrl: string;
 }

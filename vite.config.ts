@@ -38,6 +38,16 @@ export default defineConfig({
         target: 'https://q2d5ribl0g.execute-api.us-east-1.amazonaws.com/dev/templates',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api-templates/, ''),
+      },
+      '/api-modify': {
+        target: 'https://q2d5ribl0g.execute-api.us-east-1.amazonaws.com/dev/modify',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api-modify/, ''),
+      },
+      '/api-download': {
+        target: 'https://q2d5ribl0g.execute-api.us-east-1.amazonaws.com/dev/download',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api-download/, ''),
       }
     }
   }
