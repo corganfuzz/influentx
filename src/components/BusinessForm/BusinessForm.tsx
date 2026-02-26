@@ -76,7 +76,7 @@ export function BusinessForm({ isOpen, slide, onOpenChange, onSuccess }: Busines
                             Business Changes
                         </DialogTitle>
                         <DialogContent className="flex flex-col gap-5 py-4">
-                            <Text>Editing data for: <span className="font-semibold">{slide?.title}</span></Text>
+                            <Text>Editing data for: <span className="business-form-file-info">{slide?.title}</span></Text>
 
                             <Field label="Pain Points" required>
                                 <Dropdown

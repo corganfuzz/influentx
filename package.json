@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:mock": "VITE_USE_MOCK=true vite",
     "build": "tsc -b && vite build",
     "build:sp": "bun run build && bun run scripts/create-aspx-loader.js",
     "deploy": "bun run scripts/deploy.js",

@@ -72,10 +72,6 @@ export default function App() {
             />
           ) : (
             <div className="animate-in fade-in duration-300">
-              <div className="flex items-center justify-between mb-8">
-                <h2 className="text-2xl font-semibold text-[#1C1F2A]">Available Templates</h2>
-              </div>
-
               {isLoadingTemplates ? (
                 <div className="flex flex-col items-center justify-center py-20 gap-4">
                   <Spinner size="large" appearance="primary" />

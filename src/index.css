@@ -53,3 +53,74 @@ body,
   margin-left: 0 !important;
   min-width: 100% !important;
 }
+
+/* =====================================================================
+   COMPONENT STYLES
+   ===================================================================== */
+
+/* TemplateCard styles */
+.template-card {
+  width: 100%;
+  height: fit-content;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.template-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 20px -10px rgba(0, 0, 0, 0.15);
+}
+
+.template-card-preview {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: #f3f4f6;
+}
+
+
+.template-card-header-icon {
+  display: block;
+  min-width: 32px;
+  min-height: 32px;
+}
+
+.template-card-filename-container {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.template-card-filename {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.template-card-header-title {
+  margin: 0;
+  font-weight: bold;
+}
+
+/* BusinessForm styles */
+.business-form-file-info {
+  font-weight: 600;
+}
+
+/* SuccessView styles */
+.success-view-generated-container {
+  background-color: #f0f2f5;
+}
+
+.success-view-generated-label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.success-view-generated-filename {
+  display: block;
+  font-weight: 600;
+}

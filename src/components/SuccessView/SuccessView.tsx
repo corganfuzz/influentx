@@ -49,9 +49,9 @@ export function SuccessView({ lambdaResult, onBackToStart }: SuccessViewProps) {
 
             <div className="flex flex-col gap-6 border-t border-[#E2E3E3] pt-8">
                 {lambdaResult?.outputKey && (
-                    <div className="bg-[#f0f2f5] p-4 rounded-md border border-[#E2E3E3]">
-                        <Text size={200} className="text-[#808080] block mb-1 uppercase font-bold tracking-wider">File Generated:</Text>
-                        <Text size={400} className="text-[#1C1F2A] font-semibold truncate block" title={lambdaResult.outputKey}>
+                    <div className="p-4 rounded-md border border-[#E2E3E3] success-view-generated-container">
+                        <Text size={200} className="text-[#808080] success-view-generated-label uppercase tracking-wider">File Generated:</Text>
+                        <Text size={400} className="text-[#1C1F2A] truncate block success-view-generated-filename" title={lambdaResult.outputKey}>
                             {lambdaResult.outputKey}
                         </Text>
                     </div>

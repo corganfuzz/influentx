@@ -1,7 +1,6 @@
 import {
     Card,
     CardPreview,
-    Image,
     CardHeader,
     CardFooter,
     Button,
@@ -20,12 +19,11 @@ interface TemplateCardProps {
 export function TemplateCard({ slide, onEdit }: TemplateCardProps) {
     return (
         <Card
-            className="bg-white border border-[#E2E3E3] hover:border-[#808080] transition-colors duration-200"
+            className="bg-white border border-[#E2E3E3] hover:border-[#808080] transition-colors duration-200 template-card"
             onClick={() => onEdit(slide)}
-            style={{ width: "100%", height: "fit-content", cursor: "pointer" }}
         >
-            <CardPreview className="border-b border-[#E2E3E3]">
-                <Image src={slide.thumbnail} alt={slide.title} />
+            <CardPreview className="border-b border-[#E2E3E3] template-card-preview">
+                <img src={slide.thumbnail} alt={slide.title} />
             </CardPreview>
             <CardHeader
                 image={
@@ -34,11 +32,11 @@ export function TemplateCard({ slide, onEdit }: TemplateCardProps) {
                         width="32"
                         height="32"
                         alt="Microsoft PowerPoint logo"
-                        style={{ display: 'block', minWidth: '32px', minHeight: '32px' }}
+                        className="template-card-header-icon"
                     />
                 }
                 header={
-                    <Body1 as="h5" style={{ margin: 0, fontWeight: "bold" }} className="text-[#1C1F2A]">
+                    <Body1 as="h5" className="text-[#1C1F2A] template-card-header-title">
                         {slide.title}
                     </Body1>
                 }
@@ -54,22 +52,6 @@ export function TemplateCard({ slide, onEdit }: TemplateCardProps) {
             />
 
             <CardFooter className="flex items-center justify-between gap-4 pt-2 overflow-hidden">
-                {slide.fileName && (
-                    <div style={{ minWidth: 0, flex: "1 1 auto" }}>
-                        <Caption1
-                            style={{
-                                display: 'block',
-                                whiteSpace: 'nowrap',
-                                overflow: 'hidden',
-                                textOverflow: 'ellipsis'
-                            }}
-                            className="text-[#BDBDBD]"
-                            title={slide.fileName}
-                        >
-                            {slide.fileName.split('/').pop()}
-                        </Caption1>
-                    </div>
-                )}
                 <Button
                     appearance="primary"
                     icon={<EditRegular />}
@@ -81,6 +63,16 @@ export function TemplateCard({ slide, onEdit }: TemplateCardProps) {
                 >
                     Edit
                 </Button>
+                {slide.fileName && (
+                    <div className="template-card-filename-container">
+                        <span
+                            className="text-[#9b9da8] block truncate text-xs"
+                            title={slide.fileName}
+                        >
+                            {slide.fileName.split('/').pop()}
+                        </span>
+                    </div>
+                )}
             </CardFooter>
         </Card>
     );

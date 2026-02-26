@@ -1,5 +1,6 @@
 import type { TemplatePayload, LambdaResponse, ApiTemplateResponse, Slide } from "../types";
 import { makePlaceholder } from "../config/constants";
+import { MOCK_SLIDES } from "./mockData";
 
 const TEMPLATES_API_URL = import.meta.env.VITE_TEMPLATES_API_URL as string | undefined;
 const TEMPLATES_API_KEY = import.meta.env.VITE_TEMPLATES_API_KEY as string | undefined;
@@ -7,6 +8,13 @@ const MODIFY_API_URL = import.meta.env.VITE_MODIFY_API_URL as string | undefined
 const DOWNLOAD_API_URL = import.meta.env.VITE_DOWNLOAD_API_URL as string | undefined;
 
 export async function fetchAvailableTemplates(): Promise<Slide[]> {
+    // Check if we should use mock data
+    if (import.meta.env.VITE_USE_MOCK === "true") {
+        return new Promise((resolve) => {
+            setTimeout(() => resolve(MOCK_SLIDES), 500); // Simulate network delay
+        });
+    }
+
     if (!TEMPLATES_API_URL || !TEMPLATES_API_KEY) {
         throw new Error("Templates API URL or Key is not configured in .env");
     }
@@ -42,7 +50,7 @@ export async function fetchAvailableTemplates(): Promise<Slide[]> {
             id: `api-slide-${index}`,
             title: title,
             type: "Presentation",
-            thumbnail: makePlaceholder(title),
+            thumbnail: makePlaceholder(title, index),
             fileName: item.fileName
         };
     });
