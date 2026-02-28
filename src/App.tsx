@@ -53,12 +53,12 @@ export default function App() {
     <FluentProvider theme={appTheme}>
       <div className="min-h-screen bg-[#f9fafb] text-[#1C1F2A] font-sans">
         {/* Modern Clean Header with subtle brand accent */}
-        <header className="bg-[#1C1F2A] border-b border-[#E2E3E3] px-8 py-10 lg:px-12 w-full relative before:absolute before:top-0 before:left-0 before:right-0 before:h-1 before:bg-[#6464e6]">
+        <header className="bg-[#6464e6] border-b border-[#E2E3E3] px-8 py-10 lg:px-12 w-full relative before:absolute before:top-0 before:left-0 before:right-0 before:h-1 before:bg-[#6464e6]">
           <div className="max-w-6xl mx-auto">
-            <h1 className="text-3xl font-semibold text-[#FFFFFF] mb-2">
+            <h1 className="!text-3xl !font-semibold !font-sans !text-[#FFFFFF] !mb-2">
               PRO Template Customizer
             </h1>
-            <p className="text-lg font-medium text-[#808080]">
+            <p className="!text-lg !font-medium !text-[#FFFFFF]">
               Select a master slide and edit its business data to generate your custom presentation.
             </p>
           </div>

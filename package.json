@@ -8,6 +8,7 @@
     "dev:mock": "VITE_USE_MOCK=true vite",
     "build": "tsc -b && vite build",
     "build:sp": "bun run build && bun run scripts/create-aspx-loader.js",
+    "build:spmock": "VITE_USE_MOCK=true bun run build && bun run scripts/create-aspx-loader.js",
     "deploy": "bun run scripts/deploy.js",
     "deploy:all": "bun run build:sp && bun run deploy",
     "lint": "eslint .",
