@@ -45,3 +45,9 @@ export const MOCK_SLIDES: Slide[] = [
         fileName: "Engineering_Roadmap.pptx"
     }
 ];
+
+export const DISPLAY_TITLES = [
+    "Q3 Financial Overview",
+    "Marketing Strategy 2026",
+    "Engineering Roadmap"
+];

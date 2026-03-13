@@ -34,3 +34,28 @@ export interface ApiTemplateResponse {
 export interface DownloadResponse {
   downloadUrl: string;
 }
+
+export interface BusinessFormProps {
+  isOpen: boolean;
+  slide: Slide | null;
+  onOpenChange: (isOpen: boolean) => void;
+  onSuccess: (result: LambdaResponse) => void;
+}
+
+export interface SuccessViewProps {
+  lambdaResult: LambdaResponse | null;
+  onBackToStart: () => void;
+}
+
+export interface TemplateCardProps {
+  slide: Slide;
+  onEdit: (slide: Slide) => void;
+}
+
+export interface SubmitTemplateParams {
+  template: { id: string; fileName: string };
+  painPoint: string;
+  revenue: number;
+  technicians: number;
+  reportingDate: string;
+}

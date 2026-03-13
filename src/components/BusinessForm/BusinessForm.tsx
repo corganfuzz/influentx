@@ -5,14 +5,7 @@ import {
 } from "@fluentui/react-components";
 import { DismissRegular } from "@fluentui/react-icons";
 import { submitTemplate } from "../../services/api";
-import type { Slide, LambdaResponse } from "../../types";
-
-interface BusinessFormProps {
-    isOpen: boolean;
-    slide: Slide | null;
-    onOpenChange: (isOpen: boolean) => void;
-    onSuccess: (result: LambdaResponse) => void;
-}
+import type { BusinessFormProps } from "../../types";
 
 export function BusinessForm({ isOpen, slide, onOpenChange, onSuccess }: BusinessFormProps) {
     const [painPoint, setPainPoint] = useState<string>("Financial");

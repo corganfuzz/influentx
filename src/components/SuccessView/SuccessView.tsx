@@ -1,13 +1,8 @@
 import { MessageBar, MessageBarBody, MessageBarTitle, Text, Button, Spinner } from "@fluentui/react-components";
 import { ArrowLeftRegular, DocumentArrowDownRegular } from "@fluentui/react-icons";
 import { useState } from "react";
-import type { LambdaResponse } from "../../types";
+import type { SuccessViewProps } from "../../types";
 import { fetchDownloadUrl } from "../../services/api";
-
-interface SuccessViewProps {
-    lambdaResult: LambdaResponse | null;
-    onBackToStart: () => void;
-}
 
 export function SuccessView({ lambdaResult, onBackToStart }: SuccessViewProps) {
     const [isDownloading, setIsDownloading] = useState(false);

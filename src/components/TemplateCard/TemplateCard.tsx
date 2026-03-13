@@ -8,13 +8,8 @@ import {
     Caption1
 } from "@fluentui/react-components";
 import { EditRegular, MoreHorizontal20Regular } from "@fluentui/react-icons";
-import type { Slide } from "../../types";
+import type { TemplateCardProps } from "../../types";
 import pptxIcon from "../../assets/pptx_icon.svg";
-
-interface TemplateCardProps {
-    slide: Slide;
-    onEdit: (slide: Slide) => void;
-}
 
 export function TemplateCard({ slide, onEdit }: TemplateCardProps) {
     return (

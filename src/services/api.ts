@@ -1,6 +1,6 @@
-import type { TemplatePayload, LambdaResponse, ApiTemplateResponse, Slide } from "../types";
+import type { TemplatePayload, LambdaResponse, ApiTemplateResponse, Slide, SubmitTemplateParams } from "../types";
 import { makePlaceholder } from "../config/constants";
-import { MOCK_SLIDES } from "./mockData";
+import { MOCK_SLIDES, DISPLAY_TITLES } from "./mockData";
 
 const TEMPLATES_API_URL = import.meta.env.VITE_TEMPLATES_API_URL as string | undefined;
 const TEMPLATES_API_KEY = import.meta.env.VITE_TEMPLATES_API_KEY as string | undefined;
@@ -37,14 +37,8 @@ export async function fetchAvailableTemplates(): Promise<Slide[]> {
 
     const data = (await response.json()) as ApiTemplateResponse[];
 
-    const displayTitles = [
-        "Q3 Financial Overview",
-        "Marketing Strategy 2026",
-        "Engineering Roadmap"
-    ];
-
     return data.map((item, index) => {
-        const title = displayTitles[index] || item.fileName.split('/').pop()?.replace('.pptx', '') || item.fileName;
+        const title = DISPLAY_TITLES[index] || item.fileName.split('/').pop()?.replace('.pptx', '') || item.fileName;
 
         return {
             id: `api-slide-${index}`,
@@ -56,13 +50,7 @@ export async function fetchAvailableTemplates(): Promise<Slide[]> {
     });
 }
 
-export async function submitTemplate(params: {
-    template: { id: string; fileName: string };
-    painPoint: string;
-    revenue: number;
-    technicians: number;
-    reportingDate: string;
-}): Promise<LambdaResponse> {
+export async function submitTemplate(params: SubmitTemplateParams): Promise<LambdaResponse> {
     if (!MODIFY_API_URL || !TEMPLATES_API_KEY) {
         throw new Error("Modify API URL or Key is not configured in .env");
     }
