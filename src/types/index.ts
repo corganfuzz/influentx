@@ -3,7 +3,8 @@ export interface Slide {
   title: string;
   type: string;
   thumbnail: string;
-  fileName: string; // Path to the actual .pptx file
+  fileName: string; // The original filename
+  embedUrl?: string; // The SharePoint contextual embed URL
 }
 
 export interface TemplatePayload {
