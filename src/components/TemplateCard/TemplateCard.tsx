@@ -5,7 +5,6 @@ import {
     CardHeader,
     CardFooter,
     Button,
-    Body1,
     Caption1,
     Dialog,
     DialogTrigger,
@@ -50,9 +49,14 @@ export function TemplateCard({ slide, onEdit }: TemplateCardProps) {
                         />
                     }
                     header={
-                        <Body1 as="h5" className="text-[#1C1F2A] template-card-header-title">
-                            {slide.title}
-                        </Body1>
+                        <div className="min-w-0 w-full overflow-hidden">
+                            <h5
+                                className="text-[#1C1F2A] template-card-header-title m-0 text-base"
+                                title={slide.title}
+                            >
+                                {slide.title}
+                            </h5>
+                        </div>
                     }
                     description={<Caption1 className="text-[#808080]">{slide.type}</Caption1>}
                     action={

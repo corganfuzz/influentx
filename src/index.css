@@ -101,6 +101,25 @@ body,
 .template-card-header-title {
   margin: 0;
   font-weight: bold;
+  display: block !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+/* Force Fluent UI slots to respect truncation */
+.template-card .fui-CardHeader__header,
+.template-card .fui-CardHeader__description {
+  min-width: 0 !important;
+  overflow: hidden !important;
+}
+
+.template-card .fui-CardHeader {
+  min-width: 0 !important;
+  width: 100% !important;
 }
 
 /* BusinessForm styles */
