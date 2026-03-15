@@ -17,6 +17,7 @@ import {
 } from "@fluentui/react-components";
 import { EditRegular, MoreHorizontal20Regular, Dismiss24Regular } from "@fluentui/react-icons";
 import type { TemplateCardProps } from "../../types";
+import { buildEmbedUrl } from "../../services/api";
 import pptxIcon from "../../assets/pptx_icon.svg";
 
 
@@ -147,7 +148,7 @@ export function TemplateCard({ slide, onEdit }: TemplateCardProps) {
                                     </div>
                                 )}
                                 <iframe
-                                    src={slide.embedUrl || `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(new URL(`../../assets/pptx-docs/${slide.fileName}`, import.meta.url).href)}`}
+                                    src={slide.token ? buildEmbedUrl(slide.token) : `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(new URL(`../../assets/pptx-docs/${slide.fileName}`, import.meta.url).href)}`}
                                     style={{
                                         width: '100%',
                                         height: '100%',

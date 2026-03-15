@@ -4,6 +4,7 @@ export interface Slide {
   type: string;
   thumbnail: string;
   fileName: string; // The original filename
+  token?: string;    // Auth token for preview
   embedUrl?: string; // The SharePoint contextual embed URL
 }
 
@@ -30,6 +31,7 @@ export interface ApiTemplateResponse {
   fileName: string;
   size: number;
   lastModified: string;
+  token?: string;
 }
 
 export interface DownloadResponse {

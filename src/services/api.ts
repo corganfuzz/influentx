@@ -6,6 +6,7 @@ const TEMPLATES_API_URL = import.meta.env.VITE_TEMPLATES_API_URL as string | und
 const TEMPLATES_API_KEY = import.meta.env.VITE_TEMPLATES_API_KEY as string | undefined;
 const MODIFY_API_URL = import.meta.env.VITE_MODIFY_API_URL as string | undefined;
 const DOWNLOAD_API_URL = import.meta.env.VITE_DOWNLOAD_API_URL as string | undefined;
+const PREVIEW_API_URL = import.meta.env.VITE_PREVIEW_API_URL as string | undefined;
 
 export async function fetchAvailableTemplates(): Promise<Slide[]> {
     // Check if we should use mock data
@@ -45,7 +46,8 @@ export async function fetchAvailableTemplates(): Promise<Slide[]> {
             title: title,
             type: "Presentation",
             thumbnail: makePlaceholder(title, index),
-            fileName: item.fileName
+            fileName: item.fileName,
+            token: item.token
         };
     });
 }
@@ -114,16 +116,16 @@ export async function fetchDownloadUrl(fileName: string): Promise<string> {
     return data.downloadUrl;
 }
 
-const API_BASE_URL =
-    (window as any).__API_BASE_URL__ ??   // set this from your SPFx web part properties
-    "https://<your-api-id>.execute-api.<region>.amazonaws.com/<stage>";
-
 /**
  * Builds the view.officeapps.live.com embed URL.
- * Office Online fetches GET /preview?token=<token> server-to-server.
+ * Office Online fetches GET /preview?token=<token> which returns a 302 redirect to S3.
  * The token is HMAC-signed by your Lambda and expires in 5 minutes.
  */
 export function buildEmbedUrl(previewToken: string): string {
-    const proxyUrl = `${API_BASE_URL}/preview?token=${encodeURIComponent(previewToken)}`;
+    if (!PREVIEW_API_URL) {
+        throw new Error("Preview API URL is not configured in .env");
+    }
+    // Added &.pptx hint for Office Online to recognize the file type
+    const proxyUrl = `${PREVIEW_API_URL}?token=${encodeURIComponent(previewToken)}&.pptx`;
     return `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(proxyUrl)}`;
 }
