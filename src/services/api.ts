@@ -113,3 +113,17 @@ export async function fetchDownloadUrl(fileName: string): Promise<string> {
     const data = (await response.json()) as { downloadUrl: string };
     return data.downloadUrl;
 }
+
+const API_BASE_URL =
+    (window as any).__API_BASE_URL__ ??   // set this from your SPFx web part properties
+    "https://<your-api-id>.execute-api.<region>.amazonaws.com/<stage>";
+
+/**
+ * Builds the view.officeapps.live.com embed URL.
+ * Office Online fetches GET /preview?token=<token> server-to-server.
+ * The token is HMAC-signed by your Lambda and expires in 5 minutes.
+ */
+export function buildEmbedUrl(previewToken: string): string {
+    const proxyUrl = `${API_BASE_URL}/preview?token=${encodeURIComponent(previewToken)}`;
+    return `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(proxyUrl)}`;
+}
