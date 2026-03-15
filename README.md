@@ -1,73 +1,61 @@
-# React + TypeScript + Vite
+# Influent: Native SharePoint Experiences through Modern React Patterns
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+TLDR;
 
-Currently, two official plugins are available:
+A React app that runs in SharePoint and allows users to view and edit dynamic powerpoint presentations.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Functional Scope
 
-## React Compiler
+Influent provides an end-to-end pipeline for the lifecycle management of dynamic presentations within the SharePoint environment:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Template Retrieval**: The system interfaces with centralized AWS S3 repositories to catalog and surface PPTX templates.
+- **Dynamic Synthesis**: A declarative form captures business logic and telemetry, which is then injected into the selected template's XML structure via a serverless execution environment.
+- **Secure Preview**: High-fidelity, in-browser rendering of presentations prior to final generation.
 
-## Expanding the ESLint configuration
+## Secure Preview Architecture: A Zero-Trust Approach
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+The preview mechanism is designed with a defense-in-depth philosophy to ensure that document streams are never exposed to unauthorized entities.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### The Security Handshake
+1.  **Tokenized Identity**: When a template is surfaced, the backend mists a short-lived, **HMAC-SHA256 signed JWT**. This token encapsulates the specific file identity and is signed using a 64-character secret managed in AWS SSM.
+2.  **Request Proxied Authorization**: The frontend never communicates directly with the storage layer for previews. Instead, it calls a secure `/preview` gateway. This gateway performs a cryptographic validation of the JWT signature and expiration before any further action is taken.
+3.  **Ephemeral Presigning**: Upon successful authorization, the system generates a **temporary S3 presigned URL** with a strictly limited TTL (Time-to-Live).
+4.  **Controlled Redirection**: The backend issues a `302 Found` redirect. This instructs the Microsoft Office Online WOPI proxy to fetch the document stream directly from the presigned S3 endpoint.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Why this is Secure
+-   **No Persistent Access**: No part of the frontend or the public internet has persistent ACL (Access Control List) permissions to the S3 buckets. 
+-   **Stateless Integrity**: The JWT ensures that neither the filename nor the request parameters can be tampered with in transit.
+-   **Limited Radius**: Even if a presigned URL were intercepted, it is valid only for seconds, and the JWT that generated it is valid only for minutes, making the window for exploitation negligible.
+-   **Isolation**: The document bytes are streamed directly from AWS to Microsoft's secure viewing servers, ensuring your enterprise infrastructure is never burdened with heavy binary traffic.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+
+## Technical Foundation
+
+The Influent frontend is built using **Fluent UI React v2**, the exact same framework utilized by Microsoft to build SharePoint Online and Microsoft 365. This ensures total visual harmony and behavioral consistency within the host environment.
+
+### SharePoint-Specific Delivery Pipeline
+Standard Single Page Applications (SPAs) are incompatible with the legacy requirements of SharePoint Classic pages. Influent resolves this through a specialized build pipeline:
+
+1. **Vite Synthesis**: High-performance bundling of the React 19 / TypeScript application.
+2. **ASPX Encapsulation**: A post-build script (`scripts/create-aspx-loader.js`) wraps the application in an `.aspx` container, mapping critical JS/CSS assets to the SharePoint directory: `/sites/Experiments/SiteAssets/SitePages/influent/`.
+
+## Architectural Highlight: Proxy-Based Previews
+
+The `TemplateCard` component leverages a secure integration with Microsoft Office Online for in-browser presentation rendering:
+
+- **Embed Interface**: `https://view.officeapps.live.com/op/embed.aspx`
+- **Identity Proxy**: Requests are routed through a secure backend `/preview` gateway using ephemeral HMAC-signed JWTs.
+- **Protocol Optimization**: A `.pptx` extension hint is injected into the query string to satisfy the Office Online viewer's strict file-type detection logic.
+
+## Development Workflow
+
+### Dependency Management
+```bash
+bun install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Production Package Generation
+```bash
+# Triggers the dedicated SharePoint .aspx loader build
+bun run build:sp
 ```
