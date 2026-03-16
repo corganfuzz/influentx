@@ -154,7 +154,9 @@ export function TemplateCard({ slide, onEdit, isLoading }: TemplateCardProps) {
                                     </div>
                                 )}
                                 <iframe
-                                    src={slide.token ? buildEmbedUrl(slide.token) : `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(new URL(`../../assets/pptx-docs/${slide.fileName}`, import.meta.url).href)}`}
+                                    src={import.meta.env.VITE_USE_MOCK === "true" && slide.embedUrl 
+                                        ? slide.embedUrl 
+                                        : (slide.token ? buildEmbedUrl(slide.token) : `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(new URL(`../../assets/pptx-docs/${slide.fileName}`, import.meta.url).href)}`)}
                                     className="preview-iframe"
                                     style={{
                                         opacity: isIframeLoading ? 0 : 1,
