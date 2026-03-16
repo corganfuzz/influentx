@@ -1,8 +1,8 @@
-# Influent: Native SharePoint Experiences through Modern React Patterns
+# Influent: React inside Sharepoint
 
 TLDR;
 
-A React app that runs in SharePoint and allows users to view and edit dynamic powerpoint presentations.
+Run a React app inside SharePoint Online , this app allows you to view and edit dynamic powerpoint presentations.
 
 ## Functional Scope
 
@@ -59,3 +59,12 @@ bun install
 # Triggers the dedicated SharePoint .aspx loader build
 bun run build:sp
 ```
+
+> [!IMPORTANT]
+> To make this work with sharepoint online you need to run a couple of Powershell Commands to interact to your O365 tenant
+
+```powershell
+Connect-PnPOnline -Url "https://your_tenant.sharepoint.com/sites/your_site" -Interactive -ClientId "your_entra_id"
+set-pnpTenantSite -Url "https://your_tenant.sharepoint.com/sites/your_site" -DenyAddAndCustomizePages: $false
+```
+

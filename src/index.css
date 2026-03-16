@@ -110,6 +110,48 @@ body,
   white-space: nowrap !important;
 }
 
+.preview-dialog-surface {
+  max-width: 1400px;
+  width: 90vw;
+}
+
+.preview-dialog-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.preview-card-container {
+  aspect-ratio: 16 / 9;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.preview-iframe-loader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background-color: #ffffff;
+}
+
+.preview-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  transition: opacity 0.3s ease;
+}
+
 /* Force Fluent UI slots to respect truncation */
 .template-card .fui-CardHeader__header,
 .template-card .fui-CardHeader__description {

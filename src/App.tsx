@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { FluentProvider, Spinner, MessageBar, MessageBarBody, MessageBarTitle } from "@fluentui/react-components";
+import { FluentProvider, MessageBar, MessageBarBody, MessageBarTitle } from "@fluentui/react-components";
 import { appTheme } from "./config/theme";
 import type { Slide, LambdaResponse } from "./types";
 import { fetchAvailableTemplates } from "./services/api";
@@ -17,6 +17,14 @@ export default function App() {
 
   const [selectedSlide, setSelectedSlide] = useState<Slide | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const skeletonSlide: Slide = {
+    id: 'skeleton',
+    title: '',
+    type: '',
+    thumbnail: '',
+    fileName: ''
+  };
 
   useEffect(() => {
     async function loadTemplates() {
@@ -52,7 +60,6 @@ export default function App() {
   return (
     <FluentProvider theme={appTheme}>
       <div className="min-h-screen bg-[#f9fafb] text-[#1C1F2A] font-sans">
-        {/* Modern Clean Header with subtle brand accent */}
         <header className="bg-[#6464e6] border-b border-[#E2E3E3] px-8 py-10 lg:px-12 w-full relative before:absolute before:top-0 before:left-0 before:right-0 before:h-1 before:bg-[#6464e6]">
           <div className="max-w-6xl mx-auto">
             <h1 className="!text-3xl !font-semibold !font-sans !text-[#FFFFFF] !mb-2">
@@ -73,9 +80,15 @@ export default function App() {
           ) : (
             <div className="animate-in fade-in duration-300">
               {isLoadingTemplates ? (
-                <div className="flex flex-col items-center justify-center py-20 gap-4">
-                  <Spinner size="large" appearance="primary" />
-                  <p className="text-[#808080]">Loading available templates...</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {[...Array(6)].map((_, i) => (
+                    <TemplateCard 
+                      key={i} 
+                      slide={skeletonSlide} 
+                      onEdit={() => {}} 
+                      isLoading={true} 
+                    />
+                  ))}
                 </div>
               ) : fetchError ? (
                 <MessageBar intent="error">

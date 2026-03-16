@@ -14,11 +14,9 @@ export function SuccessView({ lambdaResult, onBackToStart }: SuccessViewProps) {
             setIsDownloading(true);
             const downloadUrl = await fetchDownloadUrl(lambdaResult.outputKey);
 
-            // Hidden anchor tag technique for direct download
             const link = document.createElement("a");
             link.href = downloadUrl;
             link.style.display = "none";
-            // The S3 signed URL usually handles the filename, but we can hint it
             link.setAttribute("download", lambdaResult.outputKey);
             document.body.appendChild(link);
             link.click();

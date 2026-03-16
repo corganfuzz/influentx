@@ -53,6 +53,7 @@ export interface SuccessViewProps {
 export interface TemplateCardProps {
   slide: Slide;
   onEdit: (slide: Slide) => void;
+  isLoading?: boolean;
 }
 
 export interface SubmitTemplateParams {
