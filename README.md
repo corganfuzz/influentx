@@ -1,8 +1,8 @@
-# Influent: Native SharePoint Experiences through Modern React Patterns
+# Influent: React inside Sharepoint
 
 TLDR;
 
-A React app that runs in SharePoint and allows users to view and edit dynamic powerpoint presentations.
+Run a React app inside SharePoint Online , this app allows you to view and edit dynamic powerpoint presentations.
 
 ## Functional Scope
 
