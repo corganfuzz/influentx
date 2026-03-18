@@ -1,4 +1,4 @@
-import { createLightTheme } from "@fluentui/react-components";
+import { createLightTheme, makeStyles, tokens } from "@fluentui/react-components";
 import type { Theme } from "@fluentui/react-components";
 
 // Custom brand colors (i-PRO Blue)
@@ -45,3 +45,46 @@ export const appTheme: Theme = {
     colorBrandBackgroundPressed: "#4e4ea1",
     colorCompoundBrandBackground: "#6464e6",
 };
+
+// Global Component Styles (Griffel)
+export const useSharedStyles = makeStyles({
+    // Preview Dialog Layouts
+    dialogSurface: {
+        maxWidth: '1400px',
+        width: '90vw',
+    },
+    dialogActions: {
+        display: 'flex',
+        gap: '8px',
+    },
+    previewContainer: {
+        width: '100%',
+        aspectRatio: '16 / 9',
+        backgroundColor: tokens.colorNeutralBackground1,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        overflow: 'hidden',
+        position: 'relative',
+    },
+    iframeLoader: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        zIndex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '12px',
+        backgroundColor: tokens.colorNeutralBackground1,
+    },
+    iframe: {
+        width: '100%',
+        height: '100%',
+        border: 'none',
+        transition: 'opacity 0.3s ease',
+    }
+});

@@ -1,28 +1,29 @@
 import * as React from "react";
 import {
-    Card,
-    CardPreview,
-    CardHeader,
-    CardFooter,
     Button,
     Caption1,
+    Card,
+    CardHeader,
+    CardFooter,
+    CardPreview,
     Dialog,
-    DialogTrigger,
     DialogSurface,
     DialogTitle,
     DialogBody,
     DialogContent,
+    DialogTrigger,
     Spinner,
     Skeleton,
     SkeletonItem,
 } from "@fluentui/react-components";
-import { EditRegular, MoreHorizontal20Regular, Dismiss24Regular } from "@fluentui/react-icons";
+import { EditRegular, MoreHorizontal20Regular, Dismiss24Regular, OpenRegular } from "@fluentui/react-icons";
 import type { TemplateCardProps } from "../../types";
 import { buildEmbedUrl } from "../../services/api";
 import pptxIcon from "../../assets/pptx_icon.svg";
-
+import { useSharedStyles } from "../../config/theme";
 
 export function TemplateCard({ slide, onEdit, isLoading }: TemplateCardProps) {
+    const styles = useSharedStyles();
     const [previewOpen, setPreviewOpen] = React.useState(false);
     const [isIframeLoading, setIsIframeLoading] = React.useState(true);
 
@@ -120,16 +121,16 @@ export function TemplateCard({ slide, onEdit, isLoading }: TemplateCardProps) {
             ) : cardContent}
 
             <Dialog open={previewOpen} onOpenChange={(_, data) => setPreviewOpen(data.open)}>
-                <DialogSurface className="preview-dialog-surface">
+                <DialogSurface className={styles.dialogSurface}>
                     <DialogBody>
                         <DialogTitle
                             action={
-                                <div className="preview-dialog-actions">
+                                <div className={styles.dialogActions}>
                                     {slide.embedUrl && (
                                         <Button
                                             appearance="transparent"
                                             aria-label="Open in new tab"
-                                            icon={<span className="text-xl">↗️</span>}
+                                            icon={<OpenRegular />}
                                             onClick={() => window.open(slide.embedUrl, '_blank')}
                                         />
                                     )}
@@ -146,9 +147,9 @@ export function TemplateCard({ slide, onEdit, isLoading }: TemplateCardProps) {
                             {slide.title}
                         </DialogTitle>
                         <DialogContent>
-                            <CardPreview className="preview-card-container">
+                            <CardPreview className={styles.previewContainer}>
                                 {isIframeLoading && (
-                                    <div className="preview-iframe-loader">
+                                    <div className={styles.iframeLoader}>
                                         <Spinner size="large" appearance="primary" />
                                         <Caption1 className="text-[#808080]">Fetching presentation...</Caption1>
                                     </div>
@@ -157,7 +158,7 @@ export function TemplateCard({ slide, onEdit, isLoading }: TemplateCardProps) {
                                     src={import.meta.env.VITE_USE_MOCK === "true" && slide.embedUrl 
                                         ? slide.embedUrl 
                                         : (slide.token ? buildEmbedUrl(slide.token) : `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(new URL(`../../assets/pptx-docs/${slide.fileName}`, import.meta.url).href)}`)}
-                                    className="preview-iframe"
+                                    className={styles.iframe}
                                     style={{
                                         opacity: isIframeLoading ? 0 : 1,
                                     }}
