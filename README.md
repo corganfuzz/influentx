@@ -3,6 +3,7 @@
 TLDR;
 
 Run a React app inside SharePoint Online , this app allows you to view and edit dynamic powerpoint presentations.
+![editpro4k](https://github.com/user-attachments/assets/77dac586-3b01-44f3-bd4f-dcc724e6ccdb)
 
 ## Functional Scope
 
