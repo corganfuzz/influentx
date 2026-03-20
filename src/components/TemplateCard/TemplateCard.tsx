@@ -15,6 +15,7 @@ import {
     Spinner,
     Skeleton,
     SkeletonItem,
+    Tooltip,
 } from "@fluentui/react-components";
 import { EditRegular, MoreHorizontal20Regular, Dismiss24Regular, OpenRegular } from "@fluentui/react-icons";
 import type { TemplateCardProps } from "../../types";
@@ -100,12 +101,11 @@ export function TemplateCard({ slide, onEdit, isLoading }: TemplateCardProps) {
                     </div>
                 ) : slide.fileName && (
                     <div className="template-card-filename-container">
-                        <span
-                            className="text-[#9b9da8] block truncate text-xs"
-                            title={slide.fileName}
-                        >
-                            {slide.fileName.split('/').pop()}
-                        </span>
+                        <Tooltip content={slide.fileName} relationship="label">
+                            <span className="text-[#9b9da8] block truncate text-xs">
+                                {slide.fileName.split('/').pop()}
+                            </span>
+                        </Tooltip>
                     </div>
                 )}
             </CardFooter>

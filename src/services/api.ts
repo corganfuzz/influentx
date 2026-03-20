@@ -9,6 +9,33 @@ const MODIFY_API_URL = import.meta.env.VITE_MODIFY_API_URL as string | undefined
 const DOWNLOAD_API_URL = import.meta.env.VITE_DOWNLOAD_API_URL as string | undefined;
 const PREVIEW_API_URL = import.meta.env.VITE_PREVIEW_API_URL as string | undefined;
 
+/**
+ * Define generic titles often stored in PowerPoint metadata that we want to ignore.
+ */
+const TRASH_TITLES = [
+    "powerpoint presentation", 
+    "microsoft powerpoint presentation", 
+    "headline verdana bold", 
+    "presentation1",
+    "presentation"
+];
+
+/**
+ * Transforms a robotic filename into a beautiful, human-readable title.
+ * Example: "capability-assessment_v2.pptx" -> "Capability Assessment"
+ */
+function prettifyFileName(fileName: string): string {
+    return fileName
+        .split('/')
+        .pop()!                         // Get just the filename if it's a path
+        .replace(/\.pptx$/i, '')        // Remove extension
+        .replace(/[_-]/g, ' ')          // Replace hyphens/underscores with spaces
+        .replace(/\b[vV]\d+.*$/g, '')   // Remove versioning like _v1, v2
+        .trim()
+        .toLowerCase()
+        .replace(/(^\w|\s\w)/g, m => m.toUpperCase()); // Capitalize words
+}
+
 export async function fetchAvailableTemplates(): Promise<Slide[]> {
     // HYBRID MOCK: Dynamically pull template metadata from a real SharePoint Documents Library
     // bypassing AWS, but ensuring the Gallery is always synced with what's actually in SharePoint.
@@ -31,7 +58,9 @@ export async function fetchAvailableTemplates(): Promise<Slide[]> {
             const results = data.value || [];
 
             return results.map((item: any, index: number) => {
-                const title = item.Title || item.FileLeafRef.replace(".pptx", "");
+                // If the Title is generic/trash, force a fallback to the prettified filename.
+                const isTrashTitle = item.Title && TRASH_TITLES.includes(item.Title.toLowerCase().trim());
+                const title = (item.Title && !isTrashTitle) ? item.Title : prettifyFileName(item.FileLeafRef);
                 
                 return {
                     id: `sp-${item.ID}`,
@@ -74,7 +103,8 @@ export async function fetchAvailableTemplates(): Promise<Slide[]> {
     const data = (await response.json()) as ApiTemplateResponse[];
 
     return data.map((item, index) => {
-        const title = DISPLAY_TITLES[index] || item.fileName.split('/').pop()?.replace('.pptx', '') || item.fileName;
+        // Useprettified filename as a fallback for the live API as well
+        const title = DISPLAY_TITLES[index] || prettifyFileName(item.fileName);
 
         return {
             id: `api-slide-${index}`,
