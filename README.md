@@ -5,6 +5,27 @@ TLDR;
 Run a React app inside SharePoint Online , this app allows you to view and edit dynamic powerpoint presentations.
 ![editpro4k](https://github.com/user-attachments/assets/77dac586-3b01-44f3-bd4f-dcc724e6ccdb)
 
+## Use Case: Your PPTX files are stored in a SharePoint Document Library
+If your PowerPoint templates are stored directly in a SharePoint document library, follow these steps to re-use this app in your own tenant:
+
+1.  **Configure**: Modify the [sharepoint.config.json](./sharepoint.config.json) file with your specific tenant details:
+    ```json
+    {
+      "tenantDomain": "https://your-tenant.sharepoint.com",
+      "sitePath": "/sites/your-site",
+      "targetFolder": "SiteAssets/SitePages/influent", // A custom folder you create inside your SharePoint "Site Assets" library
+      "mockSourceListTitle": "Documents",
+      "mockSourceListPath": "Shared Documents"
+    }
+    ```
+2.  **Permissions**: Ensure you have performed the **two PowerShell commands** located at the bottom of this README before attempting the next step.
+3.  **Build**: Run the SharePoint mock build command:
+    ```bash
+    bun run build:spmock
+    ```
+4.  **Deploy**: Copy the generated **dist** folder contents into the custom folder you created inside your SharePoint **Site Assets** library.
+5.  **Launch**: Click on the `index.aspx` file within that library folder to launch the application.
+
 ## Functional Scope
 
 Influent provides an end-to-end pipeline for the lifecycle management of dynamic presentations within the SharePoint environment:
@@ -34,7 +55,7 @@ The preview mechanism is designed with a defense-in-depth philosophy to ensure t
 
 The project uses a two-tier configuration system to balance security and reusability:
 
-- **[sharepoint.config.json](file:///Users/billycorgan/fluent/influentx/sharepoint.config.json)** (*Committed*): Stores non-sensitive SharePoint site structure (e.g., `sitePath`, `targetFolder`). This allows the entire team to share the same deployment target.
+- **[sharepoint.config.json](./sharepoint.config.json)** (*Committed*): Stores non-sensitive SharePoint site structure (e.g., `sitePath`, `targetFolder`). This allows the entire team to share the same deployment target.
 - **`.env`** (*Gitignored*): Stores sensitive credentials and API keys (e.g., `VITE_TEMPLATES_API_KEY`, SharePoint Client Secrets).
 
 ### Updating the Deployment Target
@@ -42,8 +63,11 @@ To point the app to a different SharePoint site or library, simply update the va
 
 ```json
 {
+  "tenantDomain": "https://your-tenant.sharepoint.com",
   "sitePath": "/sites/YourSite",
-  "targetFolder": "SiteAssets/YourFolder"
+  "targetFolder": "SiteAssets/YourFolder", // Folder you create inside Site Assets
+  "mockSourceListTitle": "Documents",
+  "mockSourceListPath": "Shared Documents"
 }
 ```
 
