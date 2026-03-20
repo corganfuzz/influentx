@@ -27,6 +27,9 @@ If your PowerPoint templates are stored directly in a SharePoint document librar
 4.  **Deploy**: Copy the generated **dist** folder contents into the custom folder you created inside your SharePoint **Site Assets** library.
 5.  **Launch**: Click on the `index.aspx` file within that library folder to launch the application.
 
+> [!IMPORTANT]
+> For this use case, the form cannot be used to edit the presentation. It can only be used to view it. Since the pptx files live inside a sharepoint list and there is no aws lambda middleware to perform this operation.
+
 ## Functional Scope
 
 Influent provides an end-to-end pipeline for the lifecycle management of dynamic presentations within the SharePoint environment:
