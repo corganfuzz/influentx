@@ -29,6 +29,23 @@ The preview mechanism is designed with a defense-in-depth philosophy to ensure t
 -   **Isolation**: The document bytes are streamed directly from AWS to Microsoft's secure viewing servers, ensuring your enterprise infrastructure is never burdened with heavy binary traffic.
 
 
+## Configuration
+
+The project uses a two-tier configuration system to balance security and reusability:
+
+- **[sharepoint.config.json](file:///Users/billycorgan/fluent/influentx/sharepoint.config.json)** (*Committed*): Stores non-sensitive SharePoint site structure (e.g., `sitePath`, `targetFolder`). This allows the entire team to share the same deployment target.
+- **`.env`** (*Gitignored*): Stores sensitive credentials and API keys (e.g., `VITE_TEMPLATES_API_KEY`, SharePoint Client Secrets).
+
+### Updating the Deployment Target
+To point the app to a different SharePoint site or library, simply update the values in `sharepoint.config.json`:
+
+```json
+{
+  "sitePath": "/sites/YourSite",
+  "targetFolder": "SiteAssets/YourFolder"
+}
+```
+
 ## Technical Foundation
 
 The Influent frontend is built using **Fluent UI React v2**, the exact same framework utilized by Microsoft to build SharePoint Online and Microsoft 365. This ensures total visual harmony and behavioral consistency within the host environment.
@@ -37,7 +54,8 @@ The Influent frontend is built using **Fluent UI React v2**, the exact same fram
 Standard Single Page Applications (SPAs) are incompatible with the legacy requirements of SharePoint Classic pages. Influent resolves this through a specialized build pipeline:
 
 1. **Vite Synthesis**: High-performance bundling of the React 19 / TypeScript application.
-2. **ASPX Encapsulation**: A post-build script (`scripts/create-aspx-loader.js`) wraps the application in an `.aspx` container, mapping critical JS/CSS assets to the SharePoint directory: `/sites/Experiments/SiteAssets/SitePages/influent/`.
+2. **ASPX Encapsulation**: A post-build script (`scripts/create-aspx-loader.js`) wraps the application in an `.aspx` container. It dynamically reads your site path from `sharepoint.config.json` and rewrites all asset pointers to point to your SharePoint library.
+3. **Mock Mode**: Running `bun run build:spmock` generates a version of the app that uses local mock data, perfect for UI/UX validation within SharePoint without live API dependencies.
 
 ## Architectural Highlight: Proxy-Based Previews
 
@@ -58,13 +76,15 @@ bun install
 ```bash
 # Triggers the dedicated SharePoint .aspx loader build
 bun run build:sp
+
+# Generates a SharePoint-ready build using local mock data
+bun run build:spmock
 ```
 
 > [!IMPORTANT]
-> To make this work with sharepoint online you need to run a couple of Powershell Commands to interact to your O365 tenant
+> To make this work with SharePoint Online, you need to ensure "Custom Script" is enabled for your site. Run the following PnP PowerShell commands:
 
 ```powershell
-Connect-PnPOnline -Url "https://your_tenant.sharepoint.com/sites/your_site" -Interactive -ClientId "your_entra_id"
-set-pnpTenantSite -Url "https://your_tenant.sharepoint.com/sites/your_site" -DenyAddAndCustomizePages: $false
+Connect-PnPOnline -Url "https://your-tenant.sharepoint.com/sites/your-site" -Interactive
+Set-PnPTenantSite -Url "https://your-tenant.sharepoint.com/sites/your-site" -DenyAddAndCustomizePages $false
 ```
-

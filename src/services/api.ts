@@ -1,6 +1,7 @@
 import type { TemplatePayload, LambdaResponse, ApiTemplateResponse, Slide, SubmitTemplateParams } from "../types";
 import { makePlaceholder } from "../config/constants";
 import { MOCK_SLIDES, DISPLAY_TITLES } from "./mockData";
+import spConfig from "../../sharepoint.config.json";
 
 const TEMPLATES_API_URL = import.meta.env.VITE_TEMPLATES_API_URL as string | undefined;
 const TEMPLATES_API_KEY = import.meta.env.VITE_TEMPLATES_API_KEY as string | undefined;
@@ -9,11 +10,45 @@ const DOWNLOAD_API_URL = import.meta.env.VITE_DOWNLOAD_API_URL as string | undef
 const PREVIEW_API_URL = import.meta.env.VITE_PREVIEW_API_URL as string | undefined;
 
 export async function fetchAvailableTemplates(): Promise<Slide[]> {
-    // Check if we should use mock data
+    // HYBRID MOCK: Dynamically pull template metadata from a real SharePoint Documents Library
+    // bypassing AWS, but ensuring the Gallery is always synced with what's actually in SharePoint.
     if (import.meta.env.VITE_USE_MOCK === "true") {
-        return new Promise((resolve) => {
-            setTimeout(() => resolve(MOCK_SLIDES), 500); // Simulate network delay
-        });
+        const { sitePath, mockSourceListTitle } = spConfig;
+        
+        // SharePoint REST API URL - using root-relative path ensures authentication 
+        // works correctly when the app is uploaded to SharePoint.
+        // For the REST API, we use the List Title (e.g., 'Documents').
+        const fetchUrl = `${sitePath}/_api/web/lists/getbytitle('${mockSourceListTitle}')/items?$select=ID,Title,FileLeafRef,FileRef,UniqueId&$filter=substringof('.pptx',FileLeafRef)`;
+        
+        try {
+            const response = await fetch(fetchUrl, {
+                headers: { "Accept": "application/json; odata=nometadata" }
+            });
+
+            if (!response.ok) throw new Error(`SP REST API error: ${response.status} (Likely Auth/CORS or List Title mismatch)`);
+
+            const data = await response.json();
+            const results = data.value || [];
+
+            return results.map((item: any, index: number) => {
+                const title = item.Title || item.FileLeafRef.replace(".pptx", "");
+                
+                return {
+                    id: `sp-${item.ID}`,
+                    title: title,
+                    type: "Presentation",
+                    thumbnail: makePlaceholder(title, index),
+                    fileName: item.FileLeafRef,
+                    // Official SharePoint iframe embed syntax using the file's GUID ({UniqueId})
+                    embedUrl: `${sitePath}/_layouts/15/Doc.aspx?sourcedoc=%7B${item.UniqueId}%7D&action=embedview`
+                };
+            });
+        } catch (error) {
+            // Note: This will ALWAYS trigger when running locally via 'bun dev:mock' 
+            // since localhost cannot authenticate with SharePoint's REST API.
+            console.warn("Running locally or offline: Falling back to static MOCK_SLIDES.");
+            return MOCK_SLIDES; 
+        }
     }
 
     if (!TEMPLATES_API_URL || !TEMPLATES_API_KEY) {

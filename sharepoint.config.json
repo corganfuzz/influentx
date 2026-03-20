@@ -1,0 +1,8 @@
+{
+  "tenantDomain": "https://cirtep.sharepoint.com",
+  "sitePath": "/sites/Experiments",
+  "targetFolder": "SiteAssets/SitePages/influent",
+  "mockSourceListTitle": "Documents",
+  "mockSourceListPath": "Shared Documents"
+}
+

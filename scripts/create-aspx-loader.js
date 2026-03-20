@@ -1,8 +1,14 @@
 import fs from "fs";
 import path from "path";
 
-// ── SharePoint target path (edit this to match your site) ──
-const SP_BASE = "/sites/Experiments/SiteAssets/SitePages/influent/";
+// ── SharePoint target configuration ──
+// We load this from a dedicated JSON file so it can be committed to Git
+// while being easily updated for different sites/folders.
+const configPath = path.resolve("./sharepoint.config.json");
+const config = JSON.parse(fs.readFileSync(configPath, "utf-8"));
+
+// Construct the base path (ensuring proper trailing slash)
+const SP_BASE = `${config.sitePath}/${config.targetFolder}/`.replace(/\/+/g, '/');
 
 const distDir = path.resolve("./dist");
 const htmlPath = path.join(distDir, "index.html");
@@ -16,7 +22,6 @@ if (!fs.existsSync(htmlPath)) {
 let builtHtml = fs.readFileSync(htmlPath, "utf-8");
 
 // Rewrite relative paths (./) to the absolute SharePoint base path
-// e.g. "./assets/index-xxx.js" → "/sites/Experiments/SiteAssets/influent/assets/index-xxx.js"
 const spHtml = builtHtml.replaceAll('./', SP_BASE);
 
 // Wrap in the SharePoint ASPX structure
@@ -30,5 +35,6 @@ const aspxContent =
     `</asp:Content>\r\n`;
 
 fs.writeFileSync(path.join(distDir, "index.aspx"), aspxContent);
-console.log("✓ index.aspx generated with SharePoint paths: " + SP_BASE);
-console.log("  index.html is unchanged and still works locally.");
+console.log("✓ index.aspx generated using configuration from sharepoint.config.json");
+console.log("  Target SharePoint Base: " + SP_BASE);
+

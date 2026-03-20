@@ -173,3 +173,4 @@ export function TemplateCard({ slide, onEdit, isLoading }: TemplateCardProps) {
         </>
     );
 }
+
