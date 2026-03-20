@@ -2,7 +2,8 @@
 
 TLDR;
 
-Run a React app inside SharePoint Online , this app allows you to view and edit dynamic powerpoint presentations.
+Run a React app inside SharePoint Online , this app allows you to view and edit powerpoint presentations.
+<br/><br/>
 ![editpro4k](https://github.com/user-attachments/assets/77dac586-3b01-44f3-bd4f-dcc724e6ccdb)
 
 ## Use Case: Your PPTX files are stored in a SharePoint Document Library
